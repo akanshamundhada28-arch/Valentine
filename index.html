@@ -1,26 +1,100 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Valentine's Day Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favorite Person</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff0f3; text-align: center; padding: 50px; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+        h1 { color: #ff4d6d; }
+        .question { font-size: 1.2rem; margin-bottom: 20px; color: #590d22; }
+        button { background-color: #ff4d6d; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; margin: 5px; transition: 0.3s; }
+        button:hover { background-color: #c9184a; transform: scale(1.05); }
+        #result { margin-top: 20px; font-weight: bold; color: #ff4d6d; min-height: 24px; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-    <h1>How well do you know Valentine's Day?</h1>
-    <form>
-        <label for="q1">1. When is Valentine's Day celebrated?</label><br>
-        <input type="radio" id="q1a" name="q1" value="a">February 14<br>
-        <input type="radio" id="q1b" name="q1" value="b">March 14<br>
-        <input type="radio" id="q1c" name="q1" value="c">January 14<br>
 
-        <label for="q2">2. What flower is commonly associated with Valentine's Day?</label><br>
-        <input type="radio" id="q2a" name="q2" value="a">Tulip<br>
-        <input type="radio" id="q2b" name="q2" value="b">Rose<br>
-        <input type="radio" id="q2c" name="q2" value="c">Daisy<br>
+    <div class="card">
+        <h1>Hi Arpan! ❤️</h1>
+        <div id="quiz-container">
+            <p id="question-text" class="question">Ready to start your Valentine's mission?</p>
+            <div id="options">
+                <button onclick="nextQuestion(0)">Let's go!</button>
+            </div>
+            <p id="result"></p>
+        </div>
 
-        <label for="q3">3. What gift is traditionally given on Valentine's Day?</label><br>
-        <input type="radio" id="q3a" name="q3" value="a">Chocolates<br>
-        <input type="radio" id="q3b" name="q3" value="b">Books<br>
-        <input type="radio" id="q3c" name="q3" value="c">Toys<br>
+        <div id="final-message" class="hidden">
+            <h2>Happy Valentine's Day, Arpan!</h2>
+            <p>You passed the test! You're officially the best husband in the world. I love you! 💖</p>
+            <p style="font-size: 3rem;">🌹☕🏡💍</p>
+        </div>
+    </div>
 
-        <input type="submit" value="Submit">
-    </form>
+    <script>
+        const questions = [
+            {
+                q: "1. If we were a piece of code, what would our relationship status be?",
+                options: ["Infinite Loop of Love", "404: Not Found", "Syntax Error"],
+                answer: 0,
+                hint: "I'm never letting you go!"
+            },
+            {
+                q: "2. Which of these is my absolute favorite thing about you?",
+                options: ["Your Smile", "How you handle my 'hangry' moods", "All of the above"],
+                answer: 2,
+                hint: "It's a trick question, Arpan!"
+            },
+            {
+                q: "3. Where is our 'Happy Place'?",
+                options: ["On the couch watching movies", "Anywhere, as long as we're together", "The kitchen"],
+                answer: 1,
+                hint: "Think sentimental!"
+            },
+            {
+                q: "4. Last one: Will you be my Valentine forever?",
+                options: ["Yes", "Definitely Yes", "Yes (but with snacks)"],
+                answer: null, // Any answer works!
+                hint: "There are no wrong answers here."
+            }
+        ];
+
+        let currentStep = 0;
+
+        function nextQuestion(index) {
+            const res = document.getElementById("result");
+            
+            if (currentStep > 0) {
+                res.innerText = "Correct! You're doing great. ❤️";
+            }
+
+            if (currentStep < questions.length) {
+                const q = questions[currentStep];
+                document.getElementById("question-text").innerText = q.q;
+                const optionsDiv = document.getElementById("options");
+                optionsDiv.innerHTML = "";
+                
+                q.options.forEach((opt, i) => {
+                    const btn = document.createElement("button");
+                    btn.innerText = opt;
+                    btn.onclick = () => {
+                        if (q.answer === null || i === q.answer) {
+                            currentStep++;
+                            nextQuestion(i);
+                        } else {
+                            res.innerText = "Try again! Hint: " + q.hint;
+                        }
+                    };
+                    optionsDiv.appendChild(btn);
+                });
+            } else {
+                document.getElementById("quiz-container").classList.add("hidden");
+                document.getElementById("final-message").classList.remove("hidden");
+            }
+        }
+    </script>
 </body>
 </html>
